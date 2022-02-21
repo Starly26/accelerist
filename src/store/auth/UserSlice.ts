@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import LocalStorageService from "../../services/LocalStorageService";
-import { UserAuthTypeDto } from "../../types";
+import CookieStorageService from "../../services/CookieStorageService";
+import { ResponseDto, UserAuthTypeDto } from "../../types";
+import { loginUserThunk, registerUserThunk } from "./UserThunk";
 
 const initialState = {
   email: "",
@@ -11,18 +12,30 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    login(state, { payload }: PayloadAction<string>) {
-      state.isAuthorized = true;
-      state.email = payload;
-      console.log("login", payload);
-    },
     logout(state) {
-      LocalStorageService.resetToken();
+      CookieStorageService.resetToken();
       state.isAuthorized = false;
       console.log("logout");
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUserThunk.fulfilled, (state, { payload }) => {
+        state = payload.user;
+        CookieStorageService.setToken(payload.accessToken);
+        console.log("login", payload);
+      })
+      .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
+        state = payload.user;
+        CookieStorageService.setToken(payload.accessToken);
+        console.log("register", payload);
+      });
+  },
 });
 
-export const { login, logout } = userSlice.actions;
+export const actions = {
+  ...userSlice.actions,
+  login: loginUserThunk,
+  register: registerUserThunk,
+};
 export default userSlice.reducer;

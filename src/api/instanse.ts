@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import LocalStorageService from "../services/LocalStorageService";
+import LocalStorageService from "../services/CookieStorageService";
 
 export const instanse = axios.create({
   baseURL: "https://accelerist.herokuapp.com/api/v1/",

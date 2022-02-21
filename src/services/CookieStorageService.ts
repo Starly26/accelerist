@@ -1,4 +1,4 @@
-class LocalStorageService {
+class CookieStorageService {
   getToken() {
     let name = "token";
     let matches = document.cookie.match(
@@ -18,4 +18,4 @@ class LocalStorageService {
   }
 }
 
-export default new LocalStorageService();
+export default new CookieStorageService();

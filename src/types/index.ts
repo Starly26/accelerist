@@ -100,8 +100,17 @@ export type CompanyType = {
   crsFocus: [];
 };
 
+export type MetaType = {
+  totalItems: number;
+  itemCount: number;
+  itemsPerPage: string;
+  totalPages: number;
+  currentPage: string;
+};
+
 export type CompanyResponseDto = {
   items: [CompanyType];
+  meta: MetaType;
 };
 
 export type CompanyRequestType = {

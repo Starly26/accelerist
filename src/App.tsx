@@ -6,16 +6,16 @@ import { Layout } from "./components/Layout";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import { useAppSelector } from "./hooks/useAppSelect";
 import { AuthPage } from "./pages/AuthPage";
+import { CorporateProfilePage } from "./pages/CorporateProfilePage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { CorporateProfilePage } from "./pages/CorporateProfilePage";
 import { ProspectsPage } from "./pages/ProspectsPage";
 import { SavedSearchPage } from "./pages/SavedSearchPage";
 import { SearchPage } from "./pages/SearchPage";
+import { AdvancedPage } from "./pages/SearchPage/AdvancedPage";
 import CookieStorageService from "./services/CookieStorageService";
 import { actions } from "./store/auth/UserSlice";
-import { AdvancedPage } from "./pages/SearchPage/AdvancedPage";
 
 function App() {
   const isAuthorization = useAppSelector((state) => state.user.isAuthorized);

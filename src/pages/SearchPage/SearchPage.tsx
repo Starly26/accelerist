@@ -72,8 +72,8 @@ const SearchPage: React.FC = () => {
           </FlexContainer>
         </FlexContainer>
         <CardCompanyContainer>
-          <CardCompany />
-          <CardCompany />
+          {/* <CardCompany />
+          <CardCompany /> */}
         </CardCompanyContainer>
       </Wrapper>
     </Container>

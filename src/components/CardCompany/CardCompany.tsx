@@ -5,35 +5,42 @@ import { Like } from "../../icons/Like";
 import { CompanyType } from "../../types";
 
 type CardCompanyProps = {
-  company?: CompanyType;
+  company: CompanyType;
 };
 
-const CardCompany: React.FC<CardCompanyProps> = () => {
+const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
+  const address = `${company.street} ${company.city} ${company.state}`;
+  function numberWithCommas(x: string) {
+    return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  }
+  const revenue = numberWithCommas(company.revenue.toString());
+
   return (
     <Container>
       <Wrapper>
-        <Logo>Logo</Logo>
+        <Logo>
+          <img src={require("../../images/logoCompany.png")} alt="" />
+        </Logo>
         <RankingContainer>
           <GrayText>Priority Ranking</GrayText>
           <Title>12</Title>
         </RankingContainer>
       </Wrapper>
       <FlexContainer>
-        <Title>Name Company</Title>
-        <GrayText>Adress company</GrayText>
-        <GrayText>Phone</GrayText>
+        <Title>{company!.name}</Title>
+        <GrayText>{address}</GrayText>
+        <GrayText>{company.phone}</GrayText>
         <DescriptionContainer>
           <VerticalLineContainer>
             <GrayText>CSR Focus</GrayText>
             <Text>
-              {/* {company.crsFocus.length ? company.crsFocus :  */}
-              "No information"
+              {company.crsFocus.length ? company.crsFocus : "No information"}
             </Text>
           </VerticalLineContainer>
-          <div>
+          <RevenueContainer>
             <GrayText>Revenue</GrayText>
-            <Text>$</Text>
-          </div>
+            <Text>$ {revenue}</Text>
+          </RevenueContainer>
         </DescriptionContainer>
         <BtnContainer>
           <LikeBtn>
@@ -94,11 +101,16 @@ const DescriptionContainer = styled.div`
   justify-content: space-between;
 `;
 
+const RevenueContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`;
+
 const VerticalLineContainer = styled.div`
   border-right: 1px solid #e8e8e8;
   padding-right: 21px;
-  width: 100%;
-  margin-right: 20px;
+  width: 75%;
 `;
 
 const BtnContainer = styled.div`
@@ -116,6 +128,7 @@ const LikeBtn = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 6px;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const ProfileBtn = styled.button`
@@ -124,6 +137,7 @@ const ProfileBtn = styled.button`
   background: #ffffff;
   border: 1px solid #2baee0;
   border-radius: 6px;
+  cursor: pointer;
 `;
 
 const GrayText = styled.p`

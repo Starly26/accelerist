@@ -1,20 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CardCompany } from "../../components/CardCompany";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelect";
 import actions from "../../store/actions";
 
-const FavoritesPage = () => {
+const FavoritesPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(actions.company.getFavoriteCompanyAction({ page: 1, limit: 100 }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   const favoritesCompanies = useAppSelector(
     (state) => state.company.favoritesCompanies
   );
-  const totalCount = favoritesCompanies.length;
+  const totalCompanyCount = useAppSelector(
+    (state) => state.company.totalFavoriteCompany
+  );
+  const pageSize = useAppSelector((state) => state.company.pageSize);
+  const currentPage = useAppSelector(
+    (state) => state.company.currentFavoritePage
+  );
+  const companyCount = useAppSelector(
+    (state) => state.company.companyFavoriteCount
+  );
+  const totalPage = useAppSelector((state) => state.company.totalPages);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    dispatch(
+      actions.company.getFavoriteCompanyAction({ page: page, limit: pageSize })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const count = (currentPage - 1) * pageSize + companyCount;
+
+  const pageIncrement = () => {
+    if (page === totalPage) {
+      return page;
+    }
+    setPage(page + 1);
+  };
+
+  const pageDecrement = () => {
+    if (page === 1) {
+      return page;
+    }
+    setPage(page - 1);
+  };
+
   return (
     <Container>
       <Header>
@@ -22,13 +54,15 @@ const FavoritesPage = () => {
       </Header>
       <Main>
         <HeadContainer>
-          <TitleText>{totalCount} companies</TitleText>
+          <TitleText>{totalCompanyCount} companies</TitleText>
           <FlexContainer>
-            <Transform>
+            <Transform onClick={() => pageDecrement()}>
               <img src={require("../../images/bracket.png")} alt="" />
             </Transform>
-            <TextPage>1-15 of {totalCount}</TextPage>
-            <IconContainer>
+            <TextPage>
+              {count} of {totalCompanyCount}
+            </TextPage>
+            <IconContainer onClick={() => pageIncrement()}>
               <img src={require("../../images/bracket.png")} alt="" />
             </IconContainer>
           </FlexContainer>
@@ -89,6 +123,7 @@ const Transform = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const IconContainer = styled.div`
@@ -97,6 +132,7 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 const TextPage = styled.p`
   font-size: 12px;

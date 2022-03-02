@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import LocalStorageService from "../services/CookieStorageService";
+import CookieStorageService from "../services/CookieStorageService";
 
 export const instanse = axios.create({
   baseURL: "https://accelerist.herokuapp.com/api/v1/",
@@ -8,22 +8,9 @@ export const instanse = axios.create({
   },
 });
 
-// instanse.interceptors.request.use(async (config) => {
-//   const token = await LocalStorageService.getToken();
-//   if (!config.headers) {
-//     config.headers = {};
-//   }
-//   config.headers.Authorization = `Bearer ${token}`;
-
-//   return config;
-// }),
-//   (error: AxiosError) => {
-//     return Promise.reject(error);
-//   };
-
 instanse.interceptors.request.use(
   (config) => {
-    const token = LocalStorageService.getToken();
+    const token = CookieStorageService.getToken();
     if (!config.headers) {
       config.headers = {};
     }

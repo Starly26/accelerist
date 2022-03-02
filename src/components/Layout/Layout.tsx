@@ -2,8 +2,11 @@ import React from "react";
 import { CustomLink } from "../ui/CustomLink";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { actions } from "../../store/auth/UserSlice";
 
 const Layout: React.FC = () => {
+  const dispatch = useAppDispatch();
   return (
     <>
       <Header>
@@ -24,7 +27,9 @@ const Layout: React.FC = () => {
             <CustomLink to="search">Search </CustomLink>
           </LinkWrapper>
         </Wrapper>
-        <CustomLink to="/authorization">Logout </CustomLink>
+        <div onClick={() => dispatch(actions.logout())}>
+          <CustomLink to="/authorization">Logout </CustomLink>
+        </div>
       </Header>
       <main>
         <Outlet />

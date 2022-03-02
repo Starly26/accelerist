@@ -9,6 +9,7 @@ const FavoritesPage = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(actions.company.getFavoriteCompanyAction({ page: 1, limit: 100 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const favoritesCompanies = useAppSelector(
     (state) => state.company.favoritesCompanies

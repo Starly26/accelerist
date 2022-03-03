@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
-import { MarkSlider } from "../../../components/ui/MarkSlider";
-import { RangeSlider } from "../../../components/ui/RangeSlider";
-import { Select } from "../../../components/ui/Select";
+import { MarkSlider } from "../../../../components/ui/MarkSlider";
+import { RangeSlider } from "../../../../components/ui/RangeSlider";
+import { Select } from "../../../../components/ui/Select";
+
+type AdvancedProps = {
+  onSubmit: () => void;
+};
 
 const customFilterNames = [
   "Company CRS Focus",
@@ -20,11 +24,13 @@ type GenderType = typeof genders[number];
 const relations = ["Single", "Married"] as const;
 type RelationsType = typeof relations[number];
 
-const AdvancedPage = () => {
+const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
   const [isAdvanced, setIsAdvanced] = useState(true);
   const [gender, setGender] = useState<GenderType>("Male");
   const [relation, setRelation] = useState<RelationsType>("Single");
-  const onSubmit = () => {};
+  const onSubmitFN = (values: any) => {
+    console.log(values);
+  };
   return (
     <Wrapper>
       <p>Filters</p>
@@ -54,10 +60,9 @@ const AdvancedPage = () => {
         <>
           <Title>Priority</Title>
           <Description>
-            Customize how importtant each of the following indicators are to
-            your organization, and generate your own custom lead score. On a
-            scale 1 ( least important) - 10 (most importantn), rank each
-            attribute bellow
+            Customize how important each of the following indicators are to your
+            organization, and generate your own custom lead score. On a scale 1
+            ( least important) - 10 (most important), rank each attribute bellow
           </Description>
           <MarkSliderContainer>
             {customFilterNames.map((name) => (
@@ -68,7 +73,7 @@ const AdvancedPage = () => {
       )}
       <Title>Company</Title>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={onSubmitFN}
         render={({ handleSubmit }) => (
           <StyledForm onSubmit={handleSubmit}>
             <FlexContainer>
@@ -83,48 +88,6 @@ const AdvancedPage = () => {
                     </div>
                   )}
                 </Field>
-                <ScrollContainer>
-                  <div>
-                    <Field
-                      name="Agriculture"
-                      component="input"
-                      type="checkbox"
-                    />
-                    <Label>Agriculture</Label>
-                  </div>
-                  <div>
-                    <Field
-                      name="Entertaiment"
-                      component="input"
-                      type="checkbox"
-                    />
-                    <Label>Entertainment and Recrea..</Label>
-                  </div>
-                  <div>
-                    <Field
-                      name="Bars and Food Sevices"
-                      component="input"
-                      type="checkbox"
-                    />
-                    <Label>Bars and Food Sevices</Label>
-                  </div>
-                  <div>
-                    <Field name="Agricult" component="input" type="checkbox" />
-                    <Label>Agriculture</Label>
-                  </div>
-                  <div>
-                    <Field
-                      name="Agricultur"
-                      component="input"
-                      type="checkbox"
-                    />
-                    <Label>Agriculture</Label>
-                  </div>
-                  <div>
-                    <Field name="Agricul" component="input" type="checkbox" />
-                    <Label>Agriculture</Label>
-                  </div>
-                </ScrollContainer>
               </PartWrapper>
               <PartWrapper>
                 <Field name="location">
@@ -137,43 +100,14 @@ const AdvancedPage = () => {
                     </div>
                   )}
                 </Field>
-                <ScrollContainer>
-                  <div>
-                    <Field name="Alabama" component="input" type="checkbox" />
-                    <Label>Alabama</Label>
-                  </div>
-                  <div>
-                    <Field name="Alaska" component="input" type="checkbox" />
-                    <Label>Alaska</Label>
-                  </div>
-                  <div>
-                    <Field name="name" component="input" type="checkbox" />
-                    <Label>Bars and Food Sevices</Label>
-                  </div>
-                  <div>
-                    <Field name="Agricult" component="input" type="checkbox" />
-                    <Label>Agriculture</Label>
-                  </div>
-                  <div>
-                    <Field
-                      name="Agricultur"
-                      component="input"
-                      type="checkbox"
-                    />
-                    <Label>Agriculture</Label>
-                  </div>
-                  <div>
-                    <Field name="Agricul" component="input" type="checkbox" />
-                    <Label>Agriculture</Label>
-                  </div>
-                </ScrollContainer>
               </PartWrapper>
             </FlexContainer>
             <FlexContainer>
               <PartWrapper>
                 <Label>Scope</Label>
                 <SelectField>
-                  <Field name="scope" component={Select}>
+                  <Field name="scope" component="select">
+                    {/* {Select}  */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -183,7 +117,8 @@ const AdvancedPage = () => {
               <PartWrapper>
                 <Label>SDG Goals</Label>
                 <SelectField>
-                  <Field name="SDGGoals" component={Select}>
+                  <Field name="SDGGoals" component="select">
+                    {/* {Select}  */}
                     <option value="NoPoverty">No poverty</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -195,7 +130,8 @@ const AdvancedPage = () => {
               <PartWrapper>
                 <Label>CDR Focus</Label>
                 <SelectField>
-                  <Field name="CDRFocus" component={Select}>
+                  <Field name="CDRFocus" component="select">
+                    {/* {Select} */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -205,7 +141,8 @@ const AdvancedPage = () => {
               <PartWrapper>
                 <Label>Total Annual Contributions</Label>
                 <SelectField>
-                  <Field name="contribution" component={Select}>
+                  <Field name="contribution" component="select">
+                    {/* {Select} */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -261,7 +198,7 @@ const AdvancedPage = () => {
             </FlexContainer>
             <FlexContainer>
               <PartWrapper>
-                <Field name="Household">
+                <Field name="household">
                   {({ input }) => (
                     <div>
                       <Label>Household Income</Label>
@@ -303,7 +240,7 @@ const AdvancedPage = () => {
             </AgeWrapper>
             <div>
               <CancelBtn>Cancel</CancelBtn>
-              <SubmitButton>Search</SubmitButton>
+              <SubmitButton onClick={handleSubmit}>Search</SubmitButton>
             </div>
           </StyledForm>
         )}

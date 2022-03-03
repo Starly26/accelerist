@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Globe } from "../../../icons/Globe";
-import { MapPin } from "../../../icons/MapPin";
-import { Phone } from "../../../icons/Phone";
+import { Globe } from "../../../assets/icons/Globe";
+import { MapPin } from "../../../assets/icons/MapPin";
+import { Phone } from "../../../assets/icons/Phone";
 import { CompanyType } from "../../../types";
 
 type InfoBlockProps = {

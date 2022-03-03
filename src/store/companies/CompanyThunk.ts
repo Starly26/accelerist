@@ -4,10 +4,12 @@ import {
   getDislikeCompany,
   getFavoritesCompanies,
   getLikeCompany,
+  getNamedFilterCompany,
 } from "../../api/api";
 import {
   CompanyRequestType,
   CompanyResponseDto,
+  FilterCompanyRequestType,
   RejectThunkType,
 } from "../../types";
 
@@ -28,6 +30,17 @@ export const getAllCompaniesThunk = createAsyncThunk<
   RejectThunkType
 >("company/getAllCompanies", async (params) => {
   const response = await getAllCompanies(params);
+  return response.data;
+});
+
+export const getNamedFilterCompaniesThunk = createAsyncThunk<
+  CompanyResponseDto,
+  FilterCompanyRequestType,
+  RejectThunkType
+>("company/getNamedFilterCompanies", async (params) => {
+  const response = await getNamedFilterCompany(params);
+  console.log("filter", response.data);
+
   return response.data;
 });
 

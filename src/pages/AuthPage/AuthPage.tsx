@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import GlobalStyles from "../../styles/GlobalStyles";
+import GlobalStyles from "../../assets/styles/GlobalStyles";
 import { Form, Field } from "react-final-form";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { UserAuthType } from "../../types";
@@ -17,7 +17,6 @@ const AuthPage: React.FC = () => {
     isRegistration
       ? dispatch(actions.auth.register(values))
       : dispatch(actions.auth.login(values));
-    console.log(values);
   };
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistration, setIsRegistration] = useState(true);
@@ -55,10 +54,13 @@ const AuthPage: React.FC = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <Icon src={require("../../images/eye.png")} alt="" />
+                        <Icon
+                          src={require("../../assets/images/eye.png")}
+                          alt=""
+                        />
                       ) : (
                         <Icon
-                          src={require("../../images/eye-off.png")}
+                          src={require("../../assets/images/eye-off.png")}
                           alt=""
                         />
                       )}

@@ -16,6 +16,7 @@ export type UserAuthTypeDto = {
   role: string;
   linkedinLink: string;
   avatarKey: string;
+  loggedInAt?: Date;
 };
 
 export type ResponseDto = {
@@ -66,7 +67,7 @@ export type CompanyType = {
   subUnitIndustries: null;
   primaryIndustry: [string];
   industries: null;
-  revenue: number;
+  revenue: string;
   employeeCount: number;
   annualContributions: null;
   cashContributions: null;
@@ -116,4 +117,25 @@ export type CompanyResponseDto = {
 export type CompanyRequestType = {
   page: number;
   limit: number;
+};
+export type FilterCompanyRequestType = {
+  page: number;
+  limit: number;
+  q: string;
+};
+
+export type SavedListResponseDto = {
+  id: string;
+  name: null;
+  filters: {
+    q: string;
+  };
+  prospectsAvailable: number;
+  createdAt: Date;
+  updatedAt: Date;
+  lastAuthor: UserAuthTypeDto;
+};
+
+export type SearchValue = {
+  search: string;
 };

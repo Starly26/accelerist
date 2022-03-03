@@ -5,6 +5,7 @@ import {
   getAllCompaniesThunk,
   getLikeCompanyThunk,
   getDislikeCompanyThunk,
+  getNamedFilterCompaniesThunk,
 } from "./CompanyThunk";
 
 type InitialCompanyStateType = {
@@ -16,6 +17,10 @@ type InitialCompanyStateType = {
   currentFavoritePage: number;
   companyFavoriteCount: number;
   totalFavoritePages: number;
+  totalCompany: number;
+  currentCompanyPage: number;
+  companyCount: number;
+  totalPages: number;
 };
 
 const initialState: InitialCompanyStateType = {
@@ -27,6 +32,10 @@ const initialState: InitialCompanyStateType = {
   currentFavoritePage: 1,
   companyFavoriteCount: 0,
   totalFavoritePages: 1,
+  totalCompany: 0,
+  currentCompanyPage: 1,
+  companyCount: 0,
+  totalPages: 0,
 };
 
 const companySlice = createSlice({
@@ -44,7 +53,17 @@ const companySlice = createSlice({
       })
       .addCase(getAllCompaniesThunk.fulfilled, (state, { payload }) => {
         state.companies = payload.items;
-        return state;
+        state.totalCompany = payload.meta.totalItems;
+        state.currentCompanyPage = Number(payload.meta.currentPage);
+        state.companyCount = Number(payload.meta.itemCount);
+        state.totalPages = payload.meta.totalPages;
+      })
+      .addCase(getNamedFilterCompaniesThunk.fulfilled, (state, { payload }) => {
+        state.companies = payload.items;
+        state.totalCompany = payload.meta.totalItems;
+        state.currentCompanyPage = Number(payload.meta.currentPage);
+        state.companyCount = Number(payload.meta.itemCount);
+        state.totalPages = payload.meta.totalPages;
       })
       .addCase(getLikeCompanyThunk.fulfilled, (state, { payload }) => {
         const company = state.companies.find(
@@ -77,6 +96,7 @@ export const actions = {
   getAllCompaniesAction: getAllCompaniesThunk,
   getLikeCompanyAction: getLikeCompanyThunk,
   getDislikeCompanyAction: getDislikeCompanyThunk,
+  getNamedFilterCompaniesAction: getNamedFilterCompaniesThunk,
 };
 
 export default companySlice.reducer;

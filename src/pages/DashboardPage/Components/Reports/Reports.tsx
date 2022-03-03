@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Bracket } from "../../../../icons/Bracket";
+import { Bracket } from "../../../../assets/icons/Bracket";
 
 import { LastLogin } from "./LastLogin";
 

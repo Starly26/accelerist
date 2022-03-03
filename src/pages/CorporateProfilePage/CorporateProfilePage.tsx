@@ -1,10 +1,10 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelect";
-import { HeartIcon } from "../../icons/HeartIcon";
-import { Like } from "../../icons/Like";
+import { HeartIcon } from "../../assets/icons/HeartIcon";
+import { Like } from "../../assets/icons/Like";
 import actions from "../../store/actions";
 import { InfoBlock } from "./Components";
 
@@ -12,7 +12,7 @@ const CorporateProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   let param = useParams();
   const id = param.id;
-
+  const navigate = useNavigate();
   const allCompanies = useAppSelector((state) => state.company.companies);
   const favoriteCompanies = useAppSelector(
     (state) => state.company.favoritesCompanies
@@ -37,12 +37,15 @@ const CorporateProfilePage: React.FC = () => {
   return (
     <Container>
       <Header>
+        <Transform onClick={() => navigate(-1)}>
+          <img src={require("../../assets/images/bracket.png")} alt="" />
+        </Transform>
         <Title>Organization Profile</Title>
       </Header>
       <Main>
         <Wrapper>
           <Logo>
-            <img src={require("../../images/logoCompany.png")} alt="" />
+            <img src={require("../../assets/images/logoCompany.png")} alt="" />
           </Logo>
           <div>
             <FlexContainer>
@@ -119,4 +122,14 @@ const LikeIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const Transform = styled.div`
+  transform: scale(-1, 1);
+  margin-right: 20px;
+  width: 20px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;

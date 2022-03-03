@@ -1,87 +1,95 @@
 import React, { useEffect, useState } from "react";
-import { Form, Field } from "react-final-form";
 import styled from "styled-components";
-import { Glass } from "../../icons/Glass";
-import { Setting } from "../../icons/SettingIcon";
 import { CardCompany } from "../../components/CardCompany";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import actions from "../../store/actions";
 import { useAppSelector } from "../../hooks/useAppSelect";
+import { Header } from "./components/Header";
+import { SearchValue } from "../../types";
 
 const SearchPage: React.FC = () => {
   const onSubmit = () => {};
-  const navigate = useNavigate();
+
+  const findName = (value: SearchValue) => {
+    dispatch(
+      actions.company.getNamedFilterCompaniesAction({
+        page: page,
+        limit: pageSize,
+        q: value.search,
+      })
+    );
+  };
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const pageSize = useAppSelector((state) => state.company.pageSize);
+  const totalCompany = useAppSelector((state) => state.company.totalCompany);
+  const totalPage = useAppSelector((state) => state.company.totalPages);
+  const currentPage = useAppSelector(
+    (state) => state.company.currentCompanyPage
+  );
+  const companyCount = useAppSelector((state) => state.company.companyCount);
+  const [filter, setFilter] = useState(false);
 
   useEffect(() => {
     dispatch(
       actions.company.getAllCompaniesAction({ page: page, limit: pageSize })
     );
-  }, []);
+  }, [page]);
 
+  const pageIncrement = () => {
+    if (page === totalPage) {
+      return page;
+    }
+    setPage(page + 1);
+  };
+
+  const pageDecrement = () => {
+    if (page === 1) {
+      return page;
+    }
+    setPage(page - 1);
+  };
   const companies = useAppSelector((state) => state.company.companies);
+  const count = (currentPage - 1) * pageSize + companyCount;
+
   return (
     <Container>
-      <Header>
-        <Title>Search</Title>
-        <Form
-          onSubmit={onSubmit}
-          render={({ handleSubmit }) => (
-            <StyledForm onSubmit={handleSubmit}>
-              <Field name="search">
-                {({ input }) => (
-                  <div>
-                    <InputContainer>
-                      <Input {...input} type="text" placeholder="Search" />
-                      <ShowIconContainer>
-                        <div onClick={() => navigate("advanced")}>
-                          <Setting />
-                        </div>
-                        <div>
-                          <Glass />
-                        </div>
-                      </ShowIconContainer>
-                    </InputContainer>
-                  </div>
-                )}
-              </Field>
-            </StyledForm>
-          )}
-        />
-      </Header>
+      <Header onSubmit={onSubmit} findName={findName} />
       <Wrapper>
-        <TitleText>Found 32 companies</TitleText>
+        <TitleText>Found {totalCompany} companies</TitleText>
         <FlexContainer>
           <FlexContainer>
             <FlexContainer>
               <IconContainer>
-                <img src={require("../../images/folder-plus.png")} alt="" />
+                <img
+                  src={require("../../assets/images/folder-plus.png")}
+                  alt=""
+                />
               </IconContainer>
               <TextButton>Save List</TextButton>
             </FlexContainer>
             <FlexContainer>
               <IconContainer>
-                <img src={require("../../images/upload.png")} alt="" />
+                <img src={require("../../assets/images/upload.png")} alt="" />
               </IconContainer>
               <TextButton>Export to Excel</TextButton>
             </FlexContainer>
             <FlexContainer>
               <IconContainer>
-                <img src={require("../../images/mail.png")} alt="" />
+                <img src={require("../../assets/images/mail.png")} alt="" />
               </IconContainer>
               <TextButton>Accelerist Support</TextButton>
             </FlexContainer>
           </FlexContainer>
           <FlexContainer>
-            <Transform>
-              <img src={require("../../images/bracket.png")} alt="" />
+            <Transform onClick={() => pageDecrement()}>
+              <img src={require("../../assets/images/bracket.png")} alt="" />
             </Transform>
-            <TextPage>1-15 of 32</TextPage>
-            <IconContainer>
-              <img src={require("../../images/bracket.png")} alt="" />
+            <TextPage>
+              {count} of {totalCompany}
+            </TextPage>
+            <IconContainer onClick={() => pageIncrement()}>
+              <img src={require("../../assets/images/bracket.png")} alt="" />
             </IconContainer>
           </FlexContainer>
         </FlexContainer>
@@ -103,61 +111,11 @@ const Container = styled.div`
   font-family: Rubik;
 `;
 
-const Header = styled.div`
-  display: flex;
-  width: 100%;
-  height: 96px;
-  padding: 0 60px;
-  align-items: center;
-  background-color: #ffffff;
-`;
-
-const Title = styled.p`
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 150%;
-`;
-
 const TitleText = styled.p`
   font-weight: 500;
   font-size: 16px;
   line-height: 145%;
   margin-bottom: 26px;
-`;
-
-const StyledForm = styled.form`
-  width: 374px;
-  /* @media (max-width: 475px) {
-  } */
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  padding: 11px 50px 10px 16px;
-  background: #f1f4f5;
-
-  /* @media (max-width: 475px) {
-  } */
-`;
-
-const ShowIconContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  right: 22px;
-  width: 45px;
-  height: 20px;
-  cursor: pointer;
-`;
-const InputContainer = styled.div`
-  display: flex;
-  width: 715px;
-  margin-left: 82px;
-  border-radius: 6px;
-  align-items: center;
-  position: relative;
 `;
 
 const Wrapper = styled.div`
@@ -178,6 +136,7 @@ const Transform = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const IconContainer = styled.div`
@@ -186,6 +145,7 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const TextButton = styled.p`

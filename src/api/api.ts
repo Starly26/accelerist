@@ -1,4 +1,8 @@
-import { CompanyRequestType, UserAuthType } from "../types";
+import {
+  CompanyRequestType,
+  FilterCompanyRequestType,
+  UserAuthType,
+} from "../types";
 import { apiAuth, instanse } from "./instanse";
 
 export const loginUser = (user: UserAuthType) => {
@@ -13,6 +17,12 @@ export const getAllCompanies = (params: CompanyRequestType) => {
   return instanse.get(`companies?page=${params.page}&limit=${params.limit}`);
 };
 
+export const getNamedFilterCompany = (params: FilterCompanyRequestType) => {
+  return instanse.get(
+    `companies?page=${params.page}&limit=${params.limit}&q=${params.q}`
+  );
+};
+
 export const getCompany = (id: string) => {
   return instanse.get(`companies/${id}`);
 };
@@ -23,14 +33,14 @@ export const getFavoritesCompanies = (params: CompanyRequestType) => {
   );
 };
 
-export const getSuggestedCompanies = (limit: number) => {
-  return instanse.get(`companies/suggested?q=${limit}`);
-};
-
 export const getLikeCompany = (companyId: string) => {
   return instanse.get(`companies/${companyId}/like`);
 };
 
 export const getDislikeCompany = (companyId: string) => {
   return instanse.get(`companies/${companyId}/dislike`);
+};
+
+export const getSavedList = (params: CompanyRequestType) => {
+  return instanse.get(`saved-list?page=${params.page}&limit=${params.limit}`);
 };

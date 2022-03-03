@@ -6,7 +6,7 @@ const AuthLayuot: React.FC = ({ children }) => {
     <Container>
       <Header>
         <div>
-          <img src={require("../../../../images/logoAuth.png")} alt="" />
+          <img src={require("../../../../assets/images/logoAuth.png")} alt="" />
         </div>
       </Header>
       <Wrapper>
@@ -14,7 +14,7 @@ const AuthLayuot: React.FC = ({ children }) => {
         {children}
         <p>or continue with</p>
         <LinkedinLogoContainer>
-          <img src={require("../../../../images/linkedin.png")} alt="" />
+          <img src={require("../../../../assets/images/linkedin.png")} alt="" />
         </LinkedinLogoContainer>
       </Wrapper>
     </Container>
@@ -29,7 +29,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${require("../../../../images/homedark.png")});
+    url(${require("../../../../assets/images/homedark.png")});
   background-size: 100% 100%;
   object-fit: cover;
 `;

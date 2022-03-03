@@ -13,7 +13,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProspectsPage } from "./pages/ProspectsPage";
 import { SavedSearchPage } from "./pages/SavedSearchPage";
 import { SearchPage } from "./pages/SearchPage";
-import { AdvancedPage } from "./pages/SearchPage/AdvancedPage";
+import AppRoutes from "./route/route";
 import CookieStorageService from "./services/CookieStorageService";
 import { actions } from "./store/auth/UserSlice";
 
@@ -25,29 +25,33 @@ function App() {
 
   useEffect(() => {
     const token = CookieStorageService.getToken();
-    console.log("effect", token);
     if (!token) {
       dispatch(actions.logout());
     } else {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthorization]);
   return (
     <Routes>
-      <Route path="/authorization" element={<AuthPage />} />
+      <Route path={AppRoutes.Authorization} element={<AuthPage />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="search" element={<SearchPage />} />
-        <Route path="search/advanced" element={<AdvancedPage />} />
-        <Route path="corporate_profile/" element={<CorporateProfilePage />} />
+        <Route path={AppRoutes.Dashboard} element={<DashboardPage />} />
+        <Route path={AppRoutes.Search} element={<SearchPage />} />
         <Route
-          path="corporate_profile/:id"
+          path={AppRoutes.CorporateProfile}
           element={<CorporateProfilePage />}
         />
-        <Route path="favorites" element={<FavoritesPage />} />
-        <Route path="prospects" element={<ProspectsPage />} />
-        <Route path="accounting_services" element={<SavedSearchPage />} />
+        <Route
+          path={AppRoutes.CorporateProfileID}
+          element={<CorporateProfilePage />}
+        />
+        <Route path={AppRoutes.Favorites} element={<FavoritesPage />} />
+        <Route path={AppRoutes.Prospects} element={<ProspectsPage />} />
+        <Route
+          path={AppRoutes.AccountingServices}
+          element={<SavedSearchPage />}
+        />
         <Route path="*" element={NotFoundPage} />
       </Route>
     </Routes>

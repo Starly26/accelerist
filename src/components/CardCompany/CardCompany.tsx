@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { HeartIcon } from "../../icons/HeartIcon";
-import { Like } from "../../icons/Like";
+import { HeartIcon } from "../../assets/icons/HeartIcon";
+import { Like } from "../../assets/icons/Like";
 import actions from "../../store/actions";
 import { CompanyType } from "../../types";
 import { CustomLink } from "../ui/CustomLink";
@@ -14,9 +14,11 @@ type CardCompanyProps = {
 const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
   const address = `${company.street} ${company.city} ${company.state}`;
   function numberWithCommas(x: string) {
-    return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    if (x !== null) {
+      return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
   }
-  const revenue = numberWithCommas(company.revenue.toString());
+  const revenue = numberWithCommas(company.revenue);
   const dispatch = useAppDispatch();
   const likeFunction = () => {
     if (company.like) {
@@ -29,7 +31,7 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
     <Container>
       <Wrapper>
         <Logo>
-          <img src={require("../../images/logoCompany.png")} alt="" />
+          <img src={require("../../assets/images/logoCompany.png")} alt="" />
         </Logo>
         <RankingContainer>
           <GrayText>Priority Ranking</GrayText>

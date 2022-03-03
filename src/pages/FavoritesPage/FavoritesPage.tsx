@@ -29,7 +29,7 @@ const FavoritesPage: React.FC = () => {
       actions.company.getFavoriteCompanyAction({ page: page, limit: pageSize })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, favoritesCompanies]);
+  }, [page]);
 
   const count = (currentPage - 1) * pageSize + companyCount;
 
@@ -57,13 +57,13 @@ const FavoritesPage: React.FC = () => {
           <TitleText>{totalCompanyCount} companies</TitleText>
           <FlexContainer>
             <Transform onClick={() => pageDecrement()}>
-              <img src={require("../../images/bracket.png")} alt="" />
+              <img src={require("../../assets/images/bracket.png")} alt="" />
             </Transform>
             <TextPage>
               {count} of {totalCompanyCount}
             </TextPage>
             <IconContainer onClick={() => pageIncrement()}>
-              <img src={require("../../images/bracket.png")} alt="" />
+              <img src={require("../../assets/images/bracket.png")} alt="" />
             </IconContainer>
           </FlexContainer>
         </HeadContainer>

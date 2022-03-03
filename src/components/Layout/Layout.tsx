@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../store/auth/UserSlice";
+import AppRoutes from "../../route/route";
 
 const Layout: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -12,23 +13,23 @@ const Layout: React.FC = () => {
       <Header>
         <Wrapper>
           <ImgContainer>
-            <Img src={require("../../images/logo.png")} />
+            <Img src={require("../../assets/images/logo.png")} />
           </ImgContainer>
           <LinkWrapper>
-            <CustomLink to="/">Dashboard </CustomLink>
+            <CustomLink to={AppRoutes.Dashboard}>Dashboard </CustomLink>
           </LinkWrapper>
           <LinkWrapper>
-            <CustomLink to="favorites">Favorites </CustomLink>
+            <CustomLink to={AppRoutes.Favorites}>Favorites </CustomLink>
           </LinkWrapper>
           <LinkWrapper>
-            <CustomLink to="prospects">Prospects </CustomLink>
+            <CustomLink to={AppRoutes.Prospects}>Prospects </CustomLink>
           </LinkWrapper>
           <LinkWrapper>
-            <CustomLink to="search">Search </CustomLink>
+            <CustomLink to={AppRoutes.Search}>Search </CustomLink>
           </LinkWrapper>
         </Wrapper>
         <div onClick={() => dispatch(actions.logout())}>
-          <CustomLink to="/authorization">Logout </CustomLink>
+          <CustomLink to={AppRoutes.Authorization}>Logout </CustomLink>
         </div>
       </Header>
       <main>

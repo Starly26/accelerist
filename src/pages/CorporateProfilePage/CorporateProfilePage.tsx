@@ -13,15 +13,25 @@ const CorporateProfilePage: React.FC = () => {
   let param = useParams();
   const id = param.id;
 
-  const companies = useAppSelector((state) => state.company.companies);
-  const company = companies.find((company) => company.id === id);
+  const allCompanies = useAppSelector((state) => state.company.companies);
+  const favoriteCompanies = useAppSelector(
+    (state) => state.company.favoritesCompanies
+  );
+  let company = allCompanies.find((company) => company.id === id);
+
+  if (!allCompanies.length) {
+    company = favoriteCompanies.find((company) => company.id === id);
+  }
+
   if (!company) {
     return <></>;
   }
+
   const likeFunction = () => {
-    company.like
-      ? dispatch(actions.company.getDislikeCompanyAction(company.id))
-      : dispatch(actions.company.getLikeCompanyAction(company.id));
+    if (company!.like) {
+      return dispatch(actions.company.getDislikeCompanyAction(company!.id));
+    }
+    dispatch(actions.company.getLikeCompanyAction(company!.id));
   };
 
   return (

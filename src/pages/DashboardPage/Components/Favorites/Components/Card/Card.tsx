@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { CustomLink } from "../../../../../../components/ui/CustomLink";
 import { CompanyType } from "../../../../../../types";
 
 type CardProps = {
@@ -12,7 +13,9 @@ const Card: React.FC<CardProps> = ({ company }) => {
       <FlexContainer>
         <ImageContainer>Logo</ImageContainer>
         <div>
-          <Text>{company.name}</Text>
+          <CustomLink to={`/corporate_profile/${company.id}`}>
+            <Text>{company.name}</Text>
+          </CustomLink>
           <GrayText>Priority Ranking 12</GrayText>
         </div>
       </FlexContainer>

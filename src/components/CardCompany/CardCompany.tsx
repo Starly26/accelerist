@@ -19,7 +19,6 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
   const revenue = numberWithCommas(company.revenue.toString());
   const dispatch = useAppDispatch();
   const likeFunction = () => {
-    console.log("likeFN");
     if (company.like) {
       return dispatch(actions.company.getDislikeCompanyAction(company.id));
     }

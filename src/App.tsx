@@ -40,7 +40,11 @@ function App() {
         <Route index element={<DashboardPage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="search/advanced" element={<AdvancedPage />} />
-        <Route path="corporate_profile" element={<CorporateProfilePage />} />
+        <Route path="corporate_profile/" element={<CorporateProfilePage />} />
+        <Route
+          path="corporate_profile/:id"
+          element={<CorporateProfilePage />}
+        />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="prospects" element={<ProspectsPage />} />
         <Route path="accounting_services" element={<SavedSearchPage />} />

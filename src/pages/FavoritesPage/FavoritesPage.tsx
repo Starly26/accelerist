@@ -21,7 +21,7 @@ const FavoritesPage: React.FC = () => {
   const companyCount = useAppSelector(
     (state) => state.company.companyFavoriteCount
   );
-  const totalPage = useAppSelector((state) => state.company.totalPages);
+  const totalPage = useAppSelector((state) => state.company.totalFavoritePages);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const FavoritesPage: React.FC = () => {
       actions.company.getFavoriteCompanyAction({ page: page, limit: pageSize })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, favoritesCompanies]);
 
   const count = (currentPage - 1) * pageSize + companyCount;
 

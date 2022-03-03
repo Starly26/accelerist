@@ -11,6 +11,7 @@ const CustomLink: React.FC<CustomLinkProps> = ({ children, to, ...props }) => {
     <Link
       to={to}
       style={{
+        textDecoration: "none",
         color: match ? "red" : "#122434",
       }}
       {...props}

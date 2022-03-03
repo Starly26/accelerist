@@ -26,3 +26,11 @@ export const getFavoritesCompanies = (params: CompanyRequestType) => {
 export const getSuggestedCompanies = (limit: number) => {
   return instanse.get(`companies/suggested?q=${limit}`);
 };
+
+export const getLikeCompany = (companyId: string) => {
+  return instanse.get(`companies/${companyId}/like`);
+};
+
+export const getDislikeCompany = (companyId: string) => {
+  return instanse.get(`companies/${companyId}/dislike`);
+};

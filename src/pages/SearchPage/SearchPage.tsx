@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Field } from "react-final-form";
 import styled from "styled-components";
 import { Glass } from "../../icons/Glass";
 import { Setting } from "../../icons/SettingIcon";
 import { CardCompany } from "../../components/CardCompany";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import actions from "../../store/actions";
+import { useAppSelector } from "../../hooks/useAppSelect";
 
 const SearchPage: React.FC = () => {
   const onSubmit = () => {};
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [page, setPage] = useState(1);
+  const pageSize = useAppSelector((state) => state.company.pageSize);
+
+  useEffect(() => {
+    dispatch(
+      actions.company.getAllCompaniesAction({ page: page, limit: pageSize })
+    );
+  }, []);
+
+  const companies = useAppSelector((state) => state.company.companies);
   return (
     <Container>
       <Header>
@@ -72,8 +86,9 @@ const SearchPage: React.FC = () => {
           </FlexContainer>
         </FlexContainer>
         <CardCompanyContainer>
-          {/* <CardCompany />
-          <CardCompany /> */}
+          {companies.map((company) => (
+            <CardCompany company={company} key={company.id} />
+          ))}
         </CardCompanyContainer>
       </Wrapper>
     </Container>

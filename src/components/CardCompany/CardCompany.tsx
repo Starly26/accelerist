@@ -1,8 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { HeartIcon } from "../../icons/HeartIcon";
 import { Like } from "../../icons/Like";
+import actions from "../../store/actions";
 import { CompanyType } from "../../types";
+import { CustomLink } from "../ui/CustomLink";
 
 type CardCompanyProps = {
   company: CompanyType;
@@ -14,6 +17,14 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
     return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
   }
   const revenue = numberWithCommas(company.revenue.toString());
+  const dispatch = useAppDispatch();
+  const likeFunction = () => {
+    console.log("likeFN");
+    if (company.like) {
+      return dispatch(actions.company.getDislikeCompanyAction(company.id));
+    }
+    dispatch(actions.company.getLikeCompanyAction(company.id));
+  };
 
   return (
     <Container>
@@ -27,7 +38,9 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
         </RankingContainer>
       </Wrapper>
       <FlexContainer>
-        <Title>{company!.name}</Title>
+        <CustomLink to={`/corporate_profile/${company.id}`}>
+          <Title>{company!.name}</Title>
+        </CustomLink>
         <GrayText>{address}</GrayText>
         <GrayText>{company.phone}</GrayText>
         <DescriptionContainer>
@@ -43,12 +56,12 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
           </RevenueContainer>
         </DescriptionContainer>
         <BtnContainer>
-          <LikeBtn>
-            <Like />
+          <LikeBtn onClick={likeFunction}>
+            {company.like ? <Like /> : <HeartIcon />}
           </LikeBtn>
-          <Link to="/corporate_profile">
+          <CustomLink to={`/corporate_profile/${company.id}`}>
             <ProfileBtn>Profile</ProfileBtn>
-          </Link>
+          </CustomLink>
         </BtnContainer>
       </FlexContainer>
     </Container>

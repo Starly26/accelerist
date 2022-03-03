@@ -1,12 +1,29 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Globe } from "../../icons/Globe";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppSelector } from "../../hooks/useAppSelect";
 import { HeartIcon } from "../../icons/HeartIcon";
 import { Like } from "../../icons/Like";
-import { MapPin } from "../../icons/MapPin";
-import { Phone } from "../../icons/Phone";
+import actions from "../../store/actions";
+import { InfoBlock } from "./Components";
 
-const CorporateProfilePage = () => {
+const CorporateProfilePage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  let param = useParams();
+  const id = param.id;
+
+  const companies = useAppSelector((state) => state.company.companies);
+  const company = companies.find((company) => company.id === id);
+  if (!company) {
+    return <></>;
+  }
+  const likeFunction = () => {
+    company.like
+      ? dispatch(actions.company.getDislikeCompanyAction(company.id))
+      : dispatch(actions.company.getLikeCompanyAction(company.id));
+  };
+
   return (
     <Container>
       <Header>
@@ -14,55 +31,20 @@ const CorporateProfilePage = () => {
       </Header>
       <Main>
         <Wrapper>
-          <Logo>Logo</Logo>
+          <Logo>
+            <img src={require("../../images/logoCompany.png")} alt="" />
+          </Logo>
           <div>
             <FlexContainer>
-              <Title>Company name</Title>
-              <LikeIcon>
-                <HeartIcon />
+              <Title>{company.name}</Title>
+              <LikeIcon onClick={likeFunction}>
+                {company.like ? <Like /> : <HeartIcon />}
               </LikeIcon>
             </FlexContainer>
             <p>No information</p>
           </div>
         </Wrapper>
-        <InfoWrapper>
-          <Title>Business Description Product</Title>
-          <HeadText>Description</HeadText>
-          <div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio
-              libero repellat ad accusantium obcaecati, in eaque iusto fugit
-              aperiam iure nesciunt, minus minima quia tempore! Fuga temporibus
-              soluta facilis.
-            </p>
-          </div>
-          <HeadText>Company Ticker</HeadText>
-          <Ticker>No information</Ticker>
-          <HeadText>Address</HeadText>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed
-            numquam voluptates, nisi et ducimus fuga laborum deleniti recusandae
-            dolor doloremque beatae fugit quod incidunt autem, error harum ex
-            aliquid unde?
-          </p>
-          <HeadText>Company Contacts</HeadText>
-          <ContactContainer>
-            <FlexContainer>
-              <FlexContainer>
-                <Globe />
-                <p>site</p>
-              </FlexContainer>
-              <FlexContainer>
-                <Phone />
-                <p>phone</p>
-              </FlexContainer>
-            </FlexContainer>
-            <FlexContainer>
-              <MapPin />
-              <p>adress</p>
-            </FlexContainer>
-          </ContactContainer>
-        </InfoWrapper>
+        <InfoBlock company={company} />
       </Main>
     </Container>
   );
@@ -105,10 +87,6 @@ const Wrapper = styled.div`
   margin-bottom: 40px;
 `;
 
-const InfoWrapper = styled.div`
-  padding: 0 40px;
-`;
-
 const Logo = styled.div`
   width: 100px;
   height: 100px;
@@ -126,37 +104,9 @@ const FlexContainer = styled.div`
   align-items: center;
 `;
 
-const ContactContainer = styled.div`
-  display: flex;
-  height: 95px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  padding: 20px 0;
-`;
-
-const HeadText = styled.p`
-  font-weight: 500;
-  font-size: 24px;
-  margin-top: 40px;
-  margin-bottom: 12px;
-`;
-
 const LikeIcon = styled.div`
   margin-left: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Ticker = styled.div`
-  width: 206px;
-  height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
 `;

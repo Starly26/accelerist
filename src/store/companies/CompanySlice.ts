@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import CookieStorageService from "../../services/CookieStorageService";
+import { createSlice } from "@reduxjs/toolkit";
 import { CompanyType } from "../../types";
 import {
   getFavoriteCompanyThunk,
-  getSuggestedCompaniesThunk,
+  getAllCompaniesThunk,
+  getLikeCompanyThunk,
+  getDislikeCompanyThunk,
 } from "./CompanyThunk";
 
 type InitialCompanyStateType = {
@@ -14,7 +15,7 @@ type InitialCompanyStateType = {
   totalFavoriteCompany: number;
   currentFavoritePage: number;
   companyFavoriteCount: number;
-  totalPages: number;
+  totalFavoritePages: number;
 };
 
 const initialState: InitialCompanyStateType = {
@@ -25,7 +26,7 @@ const initialState: InitialCompanyStateType = {
   totalFavoriteCompany: 0,
   currentFavoritePage: 1,
   companyFavoriteCount: 0,
-  totalPages: 1,
+  totalFavoritePages: 1,
 };
 
 const companySlice = createSlice({
@@ -39,12 +40,33 @@ const companySlice = createSlice({
         state.currentFavoritePage = Number(payload.meta.currentPage);
         state.totalFavoriteCompany = payload.meta.totalItems;
         state.companyFavoriteCount = Number(payload.meta.itemCount);
-        state.totalPages = payload.meta.totalPages;
-        // return state;
+        state.totalFavoritePages = payload.meta.totalPages;
       })
-      .addCase(getSuggestedCompaniesThunk.fulfilled, (state, { payload }) => {
-        state.suggestedCompanies = payload.items;
+      .addCase(getAllCompaniesThunk.fulfilled, (state, { payload }) => {
+        state.companies = payload.items;
         return state;
+      })
+      .addCase(getLikeCompanyThunk.fulfilled, (state, { payload }) => {
+        const company = state.companies.find(
+          (company) => company.id === payload
+        );
+        if (!company) {
+          return;
+        }
+        console.log("like");
+
+        company.like = true;
+      })
+      .addCase(getDislikeCompanyThunk.fulfilled, (state, { payload }) => {
+        const company = state.companies.find(
+          (company) => company.id === payload
+        );
+        if (!company) {
+          return;
+        }
+        console.log("dislike");
+
+        company.like = false;
       });
   },
 });
@@ -52,7 +74,9 @@ const companySlice = createSlice({
 export const actions = {
   ...companySlice.actions,
   getFavoriteCompanyAction: getFavoriteCompanyThunk,
-  getSuggestedCompaniesAction: getSuggestedCompaniesThunk,
+  getAllCompaniesAction: getAllCompaniesThunk,
+  getLikeCompanyAction: getLikeCompanyThunk,
+  getDislikeCompanyAction: getDislikeCompanyThunk,
 };
 
 export default companySlice.reducer;

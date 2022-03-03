@@ -1,5 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getFavoritesCompanies, getSuggestedCompanies } from "../../api/api";
+import {
+  getAllCompanies,
+  getDislikeCompany,
+  getFavoritesCompanies,
+  getLikeCompany,
+} from "../../api/api";
 import {
   CompanyRequestType,
   CompanyResponseDto,
@@ -17,11 +22,30 @@ export const getFavoriteCompanyThunk = createAsyncThunk<
   return response.data;
 });
 
-export const getSuggestedCompaniesThunk = createAsyncThunk<
+export const getAllCompaniesThunk = createAsyncThunk<
   CompanyResponseDto,
-  number,
+  CompanyRequestType,
   RejectThunkType
->("company/getSuggestedCompanies", async (limit) => {
-  const response = await getSuggestedCompanies(limit);
+>("company/getAllCompanies", async (params) => {
+  const response = await getAllCompanies(params);
   return response.data;
+});
+
+export const getLikeCompanyThunk = createAsyncThunk<
+  string,
+  string,
+  RejectThunkType
+>("company/getLikeCompany", async (params) => {
+  getLikeCompany(params);
+
+  return params;
+});
+
+export const getDislikeCompanyThunk = createAsyncThunk<
+  string,
+  string,
+  RejectThunkType
+>("company/getDislikeCompany", async (params) => {
+  getDislikeCompany(params);
+  return params;
 });

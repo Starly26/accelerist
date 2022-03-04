@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SaveListType } from "../../types";
-import { getSavedListThunk } from "./SavedListThunk";
+import { getSavedListThunk, getSingleSavedListThunk } from "./SavedListThunk";
 
 type InitialSavedListType = {
   savedList: SaveListType[] | null;
@@ -9,6 +9,7 @@ type InitialSavedListType = {
   itemCount: number;
   totalPages: number;
   currentPage: number;
+  singleList: SaveListType | null;
 };
 
 const initialState: InitialSavedListType = {
@@ -18,6 +19,7 @@ const initialState: InitialSavedListType = {
   itemCount: 0,
   totalPages: 1,
   currentPage: 1,
+  singleList: null,
 };
 
 const saveListSlice = createSlice({
@@ -25,19 +27,25 @@ const saveListSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getSavedListThunk.fulfilled, (state, { payload }) => {
-      state.savedList = payload.items;
-      state.totalPages = payload.meta.totalPages;
-      state.currentPage = Number(payload.meta.currentPage);
-      state.itemCount = payload.meta.itemCount;
-      state.totalItems = payload.meta.totalItems;
-    });
+    builder
+      .addCase(getSavedListThunk.fulfilled, (state, { payload }) => {
+        state.savedList = payload.items;
+        state.totalPages = payload.meta.totalPages;
+        state.currentPage = Number(payload.meta.currentPage);
+        state.itemCount = payload.meta.itemCount;
+        state.totalItems = payload.meta.totalItems;
+      })
+      .addCase(getSingleSavedListThunk.fulfilled, (state, { payload }) => {
+        state.singleList = payload;
+        console.log(payload);
+      });
   },
 });
 
 export const actions = {
   ...saveListSlice.actions,
   getSavedListAction: getSavedListThunk,
+  getSingleSavedListAction: getSingleSavedListThunk,
 };
 
 export default saveListSlice.reducer;

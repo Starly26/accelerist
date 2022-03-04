@@ -16,11 +16,10 @@ const ProspectsPage = () => {
   const saveListCount = useAppSelector((state) => state.savedList.itemCount);
   const totalPage = useAppSelector((state) => state.savedList.totalPages);
   const count = (currentPage - 1) * pageSize + saveListCount;
-  console.log(savedList);
 
   useEffect(() => {
     dispatch(
-      actions.company.getSavedListAction({ page: page, limit: pageSize })
+      actions.savedList.getSavedListAction({ page: page, limit: pageSize })
     );
   }, [page]);
   const pageIncrement = () => {
@@ -62,9 +61,9 @@ const ProspectsPage = () => {
           </FlexContainer>
         </HeadContainer>
         <ProspectCardContainer>
-          {savedList!.map((list) => {
-            <ProspectingSessionCard list={list} key={list.id} />;
-          })}
+          {savedList!.map((list) => (
+            <ProspectingSessionCard list={list} key={list.id} />
+          ))}
         </ProspectCardContainer>
       </Main>
     </Container>

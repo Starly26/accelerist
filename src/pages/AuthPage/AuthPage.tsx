@@ -9,6 +9,7 @@ import { ButtonContainer } from "./Components/ButtonContainer";
 import { UnderFormPart } from "./Components/UnderFormPart";
 import actions from "../../store/actions";
 import { useNavigate } from "react-router-dom";
+import AppRoutes from "../../route/route";
 
 const required = (value: any) => (value ? undefined : "Required");
 
@@ -20,7 +21,7 @@ const AuthPage: React.FC = () => {
       ? await dispatch(actions.auth.register(values))
       : await dispatch(actions.auth.login(values));
 
-    navigate("/dashboard", { replace: true });
+    navigate(AppRoutes.Dashboard, { replace: true });
   };
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistration, setIsRegistration] = useState(true);

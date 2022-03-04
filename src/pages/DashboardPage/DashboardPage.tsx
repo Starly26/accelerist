@@ -11,15 +11,22 @@ const DashboardPage: React.FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(actions.company.getFavoriteCompanyAction({ page: 1, limit: 4 }));
+    dispatch(actions.savedList.getSavedListAction({ page: 1, limit: 2 }));
   }, []);
   const favoritesCompanies = useAppSelector(
     (state) => state.company.favoritesCompanies
   );
+  const savedLists = useAppSelector((state) => state.savedList.savedList);
+  console.log("list", savedLists);
+
+  if (!savedLists) {
+    return null;
+  }
   return (
     <Container>
       <Header>Dashboard</Header>
       <Wrapper>
-        <ProspectingSession />
+        <ProspectingSession savedLists={savedLists} />
         <FlexContainer>
           <Favorites companies={favoritesCompanies} />
           <Reports />

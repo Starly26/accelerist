@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProspectingSessionCard } from "../../../../components/ProspectingSessionCard";
 import AppRoutes from "../../../../route/route";
-import { CompanyType } from "../../../../types";
+import { SaveListType } from "../../../../types";
 
-type ProspectingSessionProps = {};
+type ProspectingSessionProps = {
+  savedLists: SaveListType[];
+};
 
-const ProspectingSession: React.FC<ProspectingSessionProps> = () => {
+const ProspectingSession: React.FC<ProspectingSessionProps> = ({
+  savedLists,
+}) => {
   const navigate = useNavigate();
+
   return (
     <div>
       <TitleContainer>
@@ -18,8 +23,9 @@ const ProspectingSession: React.FC<ProspectingSessionProps> = () => {
         </StyledLink>
       </TitleContainer>
       <FlexContainer>
-        <ProspectingSessionCard />
-        <ProspectingSessionCard />
+        {savedLists.map((list) => {
+          return <ProspectingSessionCard list={list} key={list.id} />;
+        })}
       </FlexContainer>
     </div>
   );

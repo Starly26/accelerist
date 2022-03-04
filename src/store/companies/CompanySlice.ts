@@ -88,9 +88,6 @@ const companySlice = createSlice({
         console.log("dislike");
 
         company.like = false;
-      })
-      .addCase(getSavedListThunk.fulfilled, (state, { payload }) => {
-        state.savedList = payload.items;
       });
   },
 });
@@ -102,7 +99,6 @@ export const actions = {
   getLikeCompanyAction: getLikeCompanyThunk,
   getDislikeCompanyAction: getDislikeCompanyThunk,
   getCompanyAction: getCompanyThunk,
-  getSavedListAction: getSavedListThunk,
 };
 
 export default companySlice.reducer;

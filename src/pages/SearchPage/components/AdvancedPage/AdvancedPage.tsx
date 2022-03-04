@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
-import { MarkSlider } from "../../../../components/ui/MarkSlider";
 import { RangeSlider } from "../../../../components/ui/RangeSlider";
 import { FilterType, ValuesFilterType } from "../../../../types";
+import { CustomFilters } from "./Components/CustomFilters";
+import { FieldInput } from "./Components/FieldInput";
+import { FieldSelect } from "./Components/FieldSelect";
 
 type AdvancedProps = {
   onSubmit: (values: FilterType) => void;
 };
-
-const customFilterNames = [
-  "Company CRS Focus",
-  "SDG Goal",
-  "Total Annual Contributions",
-  "Type of Partnership",
-  "Geographic Location",
-  "Constituent Brand Affinities",
-];
 
 const genders = ["Male", "Female", "Both"] as const;
 type GenderType = typeof genders[number];
@@ -35,8 +28,6 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
       revenueMax: values.revenue[1] * 1000000,
       gender: gender.toLocaleLowerCase(),
     };
-    console.log("filter", filter);
-
     onSubmit(filter);
   };
   return (
@@ -64,95 +55,26 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
           Customize
         </Button>
       </BtnContainer>
-      {!isAdvanced && (
-        <>
-          <Title>Priority</Title>
-          <Description>
-            Customize how important each of the following indicators are to your
-            organization, and generate your own custom lead score. On a scale 1
-            ( least important) - 10 (most important), rank each attribute bellow
-          </Description>
-          <MarkSliderContainer>
-            {customFilterNames.map((name) => (
-              <MarkSlider name={name} key={name.replace(/\s+/g, "")} />
-            ))}
-          </MarkSliderContainer>
-        </>
-      )}
+      {!isAdvanced && <CustomFilters />}
       <Title>Company</Title>
       <Form
         onSubmit={onSubmitFN}
         render={({ handleSubmit }) => (
           <StyledForm onSubmit={handleSubmit}>
             <FlexContainer>
-              <PartWrapper>
-                <Field name="industry">
-                  {({ input }) => (
-                    <div>
-                      <Label>Industry</Label>
-                      <div>
-                        <Input {...input} type="text" placeholder="Search" />
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </PartWrapper>
-              <PartWrapper>
-                <Field name="location">
-                  {({ input }) => (
-                    <div>
-                      <Label>Geographic Location</Label>
-                      <div>
-                        <Input {...input} type="text" placeholder="Search" />
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </PartWrapper>
+              <FieldInput name="industry" label="Industry" />
+              <FieldInput name="location" label="Geographic Location" />
             </FlexContainer>
             <FlexContainer>
-              <PartWrapper>
-                <Label>Scope</Label>
-                <SelectField>
-                  <Field name="scope" component="select">
-                    <option value="local">Local</option>
-                    <option value="another">Another</option>
-                    <option value="else">Else</option>
-                  </Field>
-                </SelectField>
-              </PartWrapper>
-              <PartWrapper>
-                <Label>SDG Goals</Label>
-                <SelectField>
-                  <Field name="SDGGoals" component="select">
-                    <option value="NoPoverty">No poverty</option>
-                    <option value="another">Another</option>
-                    <option value="else">Else</option>
-                  </Field>
-                </SelectField>
-              </PartWrapper>
+              <FieldSelect name="scope" label="Scope" />
+              <FieldSelect name="SDGGoals" label="SDG Goals" />
             </FlexContainer>
             <FlexContainer>
-              <PartWrapper>
-                <Label>CDR Focus</Label>
-                <SelectField>
-                  <Field name="CDRFocus" component="select">
-                    <option value="local">Local</option>
-                    <option value="another">Another</option>
-                    <option value="else">Else</option>
-                  </Field>
-                </SelectField>
-              </PartWrapper>
-              <PartWrapper>
-                <Label>Total Annual Contributions</Label>
-                <SelectField>
-                  <Field name="contribution" component="select">
-                    <option value="local">Local</option>
-                    <option value="another">Another</option>
-                    <option value="else">Else</option>
-                  </Field>
-                </SelectField>
-              </PartWrapper>
+              <FieldSelect name="CDRFocus" label="CDR Focus" />
+              <FieldSelect
+                name="contribution"
+                label="Total Annual Contributions"
+              />
             </FlexContainer>
 
             <Label>Revenue</Label>
@@ -346,23 +268,6 @@ const Label = styled.label`
   color: #737373;
 `;
 
-const SelectField = styled.div`
-  width: 496px;
-  margin-top: 4px;
-  margin-bottom: 24px;
-  background: #ffffff;
-  border: 1px solid #e8e8e8;
-  box-sizing: border-box;
-  border-radius: 6px;
-  padding-right: 16px;
-  > select {
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-    padding: 11px 31px 12px 16px;
-  }
-`;
-
 const PartWrapper = styled.div`
   width: 496px;
 `;
@@ -383,11 +288,4 @@ const Title = styled.p`
 
 const AgeWrapper = styled.div`
   margin: 24px 0 40px;
-`;
-
-const MarkSliderContainer = styled.div`
-  margin-top: 32px;
-`;
-const Description = styled.div`
-  width: 637px;
 `;

@@ -19,8 +19,6 @@ import { actions } from "./store/auth/UserSlice";
 
 function App() {
   const isAuthorization = useAppSelector((state) => state.user.isAuthorized);
-  console.log("isAuthorization", isAuthorization);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -28,10 +26,6 @@ function App() {
     if (!token) {
       dispatch(actions.logout());
     }
-    // else {
-    //   navigate("/dashboard", { replace: true });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthorization]);
   return (
     <Routes>
@@ -51,6 +45,10 @@ function App() {
         <Route path={AppRoutes.Prospects} element={<ProspectsPage />} />
         <Route
           path={AppRoutes.AccountingServices}
+          element={<SavedSearchPage />}
+        />
+        <Route
+          path={AppRoutes.AccountingServicesId}
           element={<SavedSearchPage />}
         />
         <Route path="*" element={<NotFoundPage />} />

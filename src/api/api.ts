@@ -40,3 +40,7 @@ export const getDislikeCompany = (companyId: string) => {
 export const getSavedList = (params: CompanyRequestType) => {
   return instanse.get(`saved-list?page=${params.page}&limit=${params.limit}`);
 };
+
+export const getSingleSavedList = (id: string) => {
+  return instanse.get(`saved-list/${id}`);
+};

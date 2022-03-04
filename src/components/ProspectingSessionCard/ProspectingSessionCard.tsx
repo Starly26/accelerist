@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CompanyType, SaveListType } from "../../types";
+import { CustomLink } from "../ui/CustomLink";
 
 type ProspectingSessionCardProps = {
   list: SaveListType;
@@ -9,11 +10,16 @@ type ProspectingSessionCardProps = {
 const ProspectingSessionCard: React.FC<ProspectingSessionCardProps> = ({
   list,
 }) => {
-  console.log(list);
+  let date = new Date(list.lastAuthor.loggedInAt!);
+  let dateMDY = `${date.getDate()}-${
+    date.getMonth() + 1
+  }-${date.getFullYear()}`;
 
   return (
     <Container>
-      <Title>{list!.name}</Title>
+      <CustomLink to={`/accounting_services/${list.id}`}>
+        <Title>{list.name ? list.name : "no information"}</Title>
+      </CustomLink>
       <hr />
       <GrayText>Filters</GrayText>
       <FlexContainer>
@@ -23,7 +29,7 @@ const ProspectingSessionCard: React.FC<ProspectingSessionCardProps> = ({
       <CardContainer>
         <Card>
           <GrayText>№ of Prospects Available</GrayText>
-          <Counter>230</Counter>
+          <Counter>{list.prospectsAvailable}</Counter>
         </Card>
         <Card>
           <GrayText>№ of Contacts Pursued</GrayText>
@@ -34,13 +40,13 @@ const ProspectingSessionCard: React.FC<ProspectingSessionCardProps> = ({
         <FlexContainer>
           <Circle />
           <Wrapper>
-            <p>Jenny Wilson</p>
-            <GrayText>Owner</GrayText>
+            <p>{list.lastAuthor.lastName}</p>
+            <GrayText>{list.lastAuthor.role}</GrayText>
           </Wrapper>
         </FlexContainer>
         <div>
           <GrayText>Last Activity</GrayText>
-          <p>1 Jul 2020</p>
+          <p>{dateMDY}</p>
         </div>
       </UserContainer>
     </Container>

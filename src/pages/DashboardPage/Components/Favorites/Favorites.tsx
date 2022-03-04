@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import AppRoutes from "../../../../route/route";
 import { CompanyType } from "../../../../types";
 import { Card } from "./Components/Card";
 
@@ -14,7 +15,9 @@ const Favorites: React.FC<FavoritesProps> = ({ companies }) => {
     <Container>
       <TitleContainer>
         <TitleText>Favorites</TitleText>
-        <StyledLink onClick={() => navigate("favorites")}>see more</StyledLink>
+        <StyledLink onClick={() => navigate(AppRoutes.Favorites)}>
+          see more
+        </StyledLink>
       </TitleContainer>
       <Wrapper>
         {companies.map((company) => (

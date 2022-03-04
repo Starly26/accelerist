@@ -8,6 +8,7 @@ enum AppRoutes {
   Favorites = "/favorites",
   Prospects = "/prospects",
   AccountingServices = "/accounting_services",
+  AccountingServicesId = "/accounting_services/:id",
 }
 
 export default AppRoutes;

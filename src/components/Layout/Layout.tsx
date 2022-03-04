@@ -65,4 +65,7 @@ const ImgContainer = styled.div`
 `;
 const LinkWrapper = styled.div`
   margin-right: 28px;
+  @media (max-width: 375px) {
+    display: none;
+  }
 `;

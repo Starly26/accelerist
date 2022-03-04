@@ -6,6 +6,8 @@ import { useAppSelector } from "../../hooks/useAppSelect";
 import actions from "../../store/actions";
 
 const FavoritesPage: React.FC = () => {
+  const [page, setPage] = useState(1);
+
   const dispatch = useAppDispatch();
 
   const favoritesCompanies = useAppSelector(
@@ -15,6 +17,7 @@ const FavoritesPage: React.FC = () => {
     (state) => state.company.totalFavoriteCompany
   );
   const pageSize = useAppSelector((state) => state.company.pageSize);
+
   const currentPage = useAppSelector(
     (state) => state.company.currentFavoritePage
   );
@@ -22,7 +25,16 @@ const FavoritesPage: React.FC = () => {
     (state) => state.company.companyFavoriteCount
   );
   const totalPage = useAppSelector((state) => state.company.totalFavoritePages);
-  const [page, setPage] = useState(1);
+
+  const onLike = async (id: string, like: boolean) => {
+    if (!like) {
+      return dispatch(actions.company.getLikeCompanyAction(id));
+    }
+    await dispatch(actions.company.getDislikeCompanyAction(id));
+    dispatch(
+      actions.company.getFavoriteCompanyAction({ page: page, limit: pageSize })
+    );
+  };
 
   useEffect(() => {
     dispatch(
@@ -69,7 +81,7 @@ const FavoritesPage: React.FC = () => {
         </HeadContainer>
         <CardCompanyContainer>
           {favoritesCompanies.map((company) => (
-            <CardCompany key={company.id} company={company} />
+            <CardCompany key={company.id} company={company} onLike={onLike} />
           ))}
         </CardCompanyContainer>
       </Main>

@@ -3,10 +3,10 @@ import { Field, Form } from "react-final-form";
 import styled from "styled-components";
 import { MarkSlider } from "../../../../components/ui/MarkSlider";
 import { RangeSlider } from "../../../../components/ui/RangeSlider";
-import { Select } from "../../../../components/ui/Select";
+import { FilterType, ValuesFilterType } from "../../../../types";
 
 type AdvancedProps = {
-  onSubmit: () => void;
+  onSubmit: (values: FilterType) => void;
 };
 
 const customFilterNames = [
@@ -26,10 +26,18 @@ type RelationsType = typeof relations[number];
 
 const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
   const [isAdvanced, setIsAdvanced] = useState(true);
-  const [gender, setGender] = useState<GenderType>("Male");
+  const [gender, setGender] = useState<GenderType>("Both");
   const [relation, setRelation] = useState<RelationsType>("Single");
-  const onSubmitFN = (values: any) => {
-    console.log(values);
+
+  const onSubmitFN = (values: ValuesFilterType) => {
+    const filter = {
+      revenueMin: values.revenue[0] * 1000000,
+      revenueMax: values.revenue[1] * 1000000,
+      gender: gender.toLocaleLowerCase(),
+    };
+    console.log("filter", filter);
+
+    onSubmit(filter);
   };
   return (
     <Wrapper>
@@ -107,7 +115,6 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                 <Label>Scope</Label>
                 <SelectField>
                   <Field name="scope" component="select">
-                    {/* {Select}  */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -118,7 +125,6 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                 <Label>SDG Goals</Label>
                 <SelectField>
                   <Field name="SDGGoals" component="select">
-                    {/* {Select}  */}
                     <option value="NoPoverty">No poverty</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -131,7 +137,6 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                 <Label>CDR Focus</Label>
                 <SelectField>
                   <Field name="CDRFocus" component="select">
-                    {/* {Select} */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -142,7 +147,6 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                 <Label>Total Annual Contributions</Label>
                 <SelectField>
                   <Field name="contribution" component="select">
-                    {/* {Select} */}
                     <option value="local">Local</option>
                     <option value="another">Another</option>
                     <option value="else">Else</option>
@@ -156,7 +160,7 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
               {({ input }) => (
                 <PartWrapper>
                   <RangeSlider
-                    step={0.1}
+                    step={1}
                     min={1}
                     max={80}
                     onChange={input.onChange}
@@ -175,6 +179,7 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                       key={item}
                       onClick={() => setGender(item)}
                       $active={item === gender}
+                      type="button"
                     >
                       {item}
                     </GenderButton>
@@ -189,6 +194,7 @@ const AdvancedPage: React.FC<AdvancedProps> = ({ onSubmit }) => {
                       key={item}
                       onClick={() => setRelation(item)}
                       $active={item === relation}
+                      type="button"
                     >
                       {item}
                     </RelationButton>
@@ -340,13 +346,6 @@ const Label = styled.label`
   color: #737373;
 `;
 
-const ScrollContainer = styled.div`
-  margin-top: 18px;
-  overflow-y: scroll;
-  height: 94px;
-  margin-bottom: 27px;
-`;
-
 const SelectField = styled.div`
   width: 496px;
   margin-top: 4px;
@@ -356,6 +355,12 @@ const SelectField = styled.div`
   box-sizing: border-box;
   border-radius: 6px;
   padding-right: 16px;
+  > select {
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    padding: 11px 31px 12px 16px;
+  }
 `;
 
 const PartWrapper = styled.div`

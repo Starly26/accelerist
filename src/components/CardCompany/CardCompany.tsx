@@ -9,23 +9,16 @@ import { CustomLink } from "../ui/CustomLink";
 
 type CardCompanyProps = {
   company: CompanyType;
+  onLike: (id: string, like: boolean) => void;
 };
 
-const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
+const CardCompany: React.FC<CardCompanyProps> = ({ company, onLike }) => {
   const address = `${company.street} ${company.city} ${company.state}`;
   function numberWithCommas(x: string) {
-    if (x !== null) {
-      return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    }
+    return x?.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
   }
   const revenue = numberWithCommas(company.revenue);
   const dispatch = useAppDispatch();
-  const likeFunction = () => {
-    if (company.like) {
-      return dispatch(actions.company.getDislikeCompanyAction(company.id));
-    }
-    dispatch(actions.company.getLikeCompanyAction(company.id));
-  };
 
   return (
     <Container>
@@ -57,7 +50,7 @@ const CardCompany: React.FC<CardCompanyProps> = ({ company }) => {
           </RevenueContainer>
         </DescriptionContainer>
         <BtnContainer>
-          <LikeBtn onClick={likeFunction}>
+          <LikeBtn onClick={() => onLike(company.id, company.like)}>
             {company.like ? <Like /> : <HeartIcon />}
           </LikeBtn>
           <CustomLink to={`/corporate_profile/${company.id}`}>
@@ -92,6 +85,10 @@ const Logo = styled.div`
   width: 168px;
   height: 156px;
   border-bottom: 1px solid #e8e8e8;
+  @media (max-width: 968px) {
+    width: 124px;
+    height: 124px;
+  }
 `;
 
 const FlexContainer = styled.div`
@@ -113,18 +110,28 @@ const DescriptionContainer = styled.div`
   border-bottom: 1px solid #e8e8e8;
   width: 100%;
   justify-content: space-between;
+  @media (max-width: 968px) {
+    flex-direction: column;
+  }
 `;
 
 const RevenueContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  @media (max-width: 968px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 const VerticalLineContainer = styled.div`
   border-right: 1px solid #e8e8e8;
   padding-right: 21px;
   width: 75%;
+  @media (max-width: 968px) {
+    border: none;
+  }
 `;
 
 const BtnContainer = styled.div`
@@ -161,6 +168,7 @@ const GrayText = styled.p`
 `;
 
 const Title = styled.p`
+  display: inline-block;
   font-weight: 500;
   font-size: 16px;
   line-height: 145%;

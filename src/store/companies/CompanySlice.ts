@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CompanyType } from "../../types";
+import { CompanyType, SaveListType } from "../../types";
 import {
   getFavoriteCompanyThunk,
   getAllCompaniesThunk,
   getLikeCompanyThunk,
   getDislikeCompanyThunk,
-  getNamedFilterCompaniesThunk,
+  getCompanyThunk,
+  getSavedListThunk,
 } from "./CompanyThunk";
 
 type InitialCompanyStateType = {
   companies: CompanyType[];
+  company: CompanyType | null;
   favoritesCompanies: CompanyType[];
   suggestedCompanies: CompanyType[];
   pageSize: number;
@@ -21,10 +23,13 @@ type InitialCompanyStateType = {
   currentCompanyPage: number;
   companyCount: number;
   totalPages: number;
+  savedList: SaveListType[] | null;
 };
 
 const initialState: InitialCompanyStateType = {
   companies: [],
+  savedList: null,
+  company: null,
   favoritesCompanies: [],
   suggestedCompanies: [],
   pageSize: 8,
@@ -58,12 +63,9 @@ const companySlice = createSlice({
         state.companyCount = Number(payload.meta.itemCount);
         state.totalPages = payload.meta.totalPages;
       })
-      .addCase(getNamedFilterCompaniesThunk.fulfilled, (state, { payload }) => {
-        state.companies = payload.items;
-        state.totalCompany = payload.meta.totalItems;
-        state.currentCompanyPage = Number(payload.meta.currentPage);
-        state.companyCount = Number(payload.meta.itemCount);
-        state.totalPages = payload.meta.totalPages;
+      .addCase(getCompanyThunk.fulfilled, (state, { payload }) => {
+        state.company = payload;
+        return state;
       })
       .addCase(getLikeCompanyThunk.fulfilled, (state, { payload }) => {
         const company = state.companies.find(
@@ -86,6 +88,9 @@ const companySlice = createSlice({
         console.log("dislike");
 
         company.like = false;
+      })
+      .addCase(getSavedListThunk.fulfilled, (state, { payload }) => {
+        state.savedList = payload.items;
       });
   },
 });
@@ -96,7 +101,8 @@ export const actions = {
   getAllCompaniesAction: getAllCompaniesThunk,
   getLikeCompanyAction: getLikeCompanyThunk,
   getDislikeCompanyAction: getDislikeCompanyThunk,
-  getNamedFilterCompaniesAction: getNamedFilterCompaniesThunk,
+  getCompanyAction: getCompanyThunk,
+  getSavedListAction: getSavedListThunk,
 };
 
 export default companySlice.reducer;

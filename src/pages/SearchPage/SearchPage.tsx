@@ -5,36 +5,47 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import actions from "../../store/actions";
 import { useAppSelector } from "../../hooks/useAppSelect";
 import { Header } from "./components/Header";
-import { SearchValue } from "../../types";
+import { FilterType } from "../../types";
 
 const SearchPage: React.FC = () => {
-  const onSubmit = () => {};
-
-  const findName = (value: SearchValue) => {
-    dispatch(
-      actions.company.getNamedFilterCompaniesAction({
-        page: page,
-        limit: pageSize,
-        q: value.search,
-      })
-    );
-  };
-  const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState<FilterType>({});
+
+  const onSubmit = (values: FilterType) => {
+    setFilter({
+      ...filter,
+      gender: values.gender,
+      revenueMin: values.revenueMin,
+      revenueMax: values.revenueMax,
+    });
+  };
+
+  const findName = (value: FilterType) => {
+    setFilter({ ...filter, q: value.q });
+  };
+
+  const queryString = require("query-string");
+  const queryFilter = queryString.stringify(filter, { skipNull: true });
+  const dispatch = useAppDispatch();
   const pageSize = useAppSelector((state) => state.company.pageSize);
+  const companies = useAppSelector((state) => state.company.companies);
   const totalCompany = useAppSelector((state) => state.company.totalCompany);
   const totalPage = useAppSelector((state) => state.company.totalPages);
   const currentPage = useAppSelector(
     (state) => state.company.currentCompanyPage
   );
   const companyCount = useAppSelector((state) => state.company.companyCount);
-  const [filter, setFilter] = useState(false);
 
   useEffect(() => {
     dispatch(
-      actions.company.getAllCompaniesAction({ page: page, limit: pageSize })
+      actions.company.getAllCompaniesAction({
+        page: page,
+        limit: pageSize,
+        filter: `&${queryFilter}`,
+      })
     );
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, filter]);
 
   const pageIncrement = () => {
     if (page === totalPage) {
@@ -49,8 +60,14 @@ const SearchPage: React.FC = () => {
     }
     setPage(page - 1);
   };
-  const companies = useAppSelector((state) => state.company.companies);
   const count = (currentPage - 1) * pageSize + companyCount;
+
+  const onLike = (id: string, like: boolean) => {
+    if (like) {
+      return dispatch(actions.company.getDislikeCompanyAction(id));
+    }
+    dispatch(actions.company.getLikeCompanyAction(id));
+  };
 
   return (
     <Container>
@@ -95,7 +112,7 @@ const SearchPage: React.FC = () => {
         </FlexContainer>
         <CardCompanyContainer>
           {companies.map((company) => (
-            <CardCompany company={company} key={company.id} />
+            <CardCompany company={company} key={company.id} onLike={onLike} />
           ))}
         </CardCompanyContainer>
       </Wrapper>

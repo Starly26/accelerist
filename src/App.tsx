@@ -27,15 +27,16 @@ function App() {
     const token = CookieStorageService.getToken();
     if (!token) {
       dispatch(actions.logout());
-    } else {
-      navigate("/dashboard", { replace: true });
     }
+    // else {
+    //   navigate("/dashboard", { replace: true });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthorization]);
   return (
     <Routes>
       <Route path={AppRoutes.Authorization} element={<AuthPage />} />
-      <Route path="/" element={<Layout />}>
+      <Route path={AppRoutes.HomePage} element={<Layout />}>
         <Route path={AppRoutes.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoutes.Search} element={<SearchPage />} />
         <Route
@@ -52,7 +53,7 @@ function App() {
           path={AppRoutes.AccountingServices}
           element={<SavedSearchPage />}
         />
-        <Route path="*" element={NotFoundPage} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

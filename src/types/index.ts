@@ -114,28 +114,33 @@ export type CompanyResponseDto = {
   meta: MetaType;
 };
 
+export type FilterType = {
+  q?: string;
+  revenueMin?: number;
+  revenueMax?: number;
+  gender?: string;
+};
+export type ValuesFilterType = {
+  revenue: number[];
+};
+
 export type CompanyRequestType = {
   page: number;
   limit: number;
-};
-export type FilterCompanyRequestType = {
-  page: number;
-  limit: number;
-  q: string;
+  filter?: string;
 };
 
-export type SavedListResponseDto = {
+export type SaveListType = {
   id: string;
   name: null;
-  filters: {
-    q: string;
-  };
+  filters: {};
   prospectsAvailable: number;
   createdAt: Date;
   updatedAt: Date;
   lastAuthor: UserAuthTypeDto;
 };
 
-export type SearchValue = {
-  search: string;
+export type SavedListResponseDto = {
+  items: SaveListType[];
+  meta: MetaType;
 };

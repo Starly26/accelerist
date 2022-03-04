@@ -8,15 +8,19 @@ import { AuthLayout } from "./Components/AuthLayoyt";
 import { ButtonContainer } from "./Components/ButtonContainer";
 import { UnderFormPart } from "./Components/UnderFormPart";
 import actions from "../../store/actions";
+import { useNavigate } from "react-router-dom";
 
 const required = (value: any) => (value ? undefined : "Required");
 
 const AuthPage: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const onSubmit = (values: UserAuthType) => {
+  const onSubmit = async (values: UserAuthType) => {
     isRegistration
-      ? dispatch(actions.auth.register(values))
-      : dispatch(actions.auth.login(values));
+      ? await dispatch(actions.auth.register(values))
+      : await dispatch(actions.auth.login(values));
+
+    navigate("/dashboard", { replace: true });
   };
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistration, setIsRegistration] = useState(true);

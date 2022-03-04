@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProspectingSessionCard } from "../../components/ProspectingSessionCard";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppSelector } from "../../hooks/useAppSelect";
+import actions from "../../store/actions";
 
 const ProspectsPage = () => {
+  const [page, setPage] = useState(1);
+
+  const dispatch = useAppDispatch();
+  const savedList = useAppSelector((state) => state.savedList.savedList);
+  const totalSaved = useAppSelector((state) => state.savedList.totalItems);
+  const currentPage = useAppSelector((state) => state.savedList.currentPage);
+  const pageSize = useAppSelector((state) => state.savedList.pageSize);
+  const saveListCount = useAppSelector((state) => state.savedList.itemCount);
+  const totalPage = useAppSelector((state) => state.savedList.totalPages);
+  const count = (currentPage - 1) * pageSize + saveListCount;
+  console.log(savedList);
+
+  useEffect(() => {
+    dispatch(
+      actions.company.getSavedListAction({ page: page, limit: pageSize })
+    );
+  }, [page]);
+  const pageIncrement = () => {
+    if (page === totalPage) {
+      return page;
+    }
+    setPage(page + 1);
+  };
+
+  const pageDecrement = () => {
+    if (page === 1) {
+      return page;
+    }
+    setPage(page - 1);
+  };
   return (
     <Container>
       <Header>
@@ -16,15 +49,22 @@ const ProspectsPage = () => {
             <SortedType>Prospects Available</SortedType>
             <SortedType>Last Activity</SortedType>
           </FlexContainer>
-          <TextPage>1-15 of totalCount</TextPage>
+          <FlexContainer>
+            <Transform onClick={() => pageDecrement()}>
+              <img src={require("../../assets/images/bracket.png")} alt="" />
+            </Transform>
+            <TextPage>
+              {count} of {totalSaved}
+            </TextPage>
+            <IconContainer onClick={() => pageIncrement()}>
+              <img src={require("../../assets/images/bracket.png")} alt="" />
+            </IconContainer>
+          </FlexContainer>
         </HeadContainer>
         <ProspectCardContainer>
-          {/* 5 times for example */}
-          <ProspectingSessionCard />
-          <ProspectingSessionCard />
-          <ProspectingSessionCard />
-          <ProspectingSessionCard />
-          <ProspectingSessionCard />
+          {savedList!.map((list) => {
+            <ProspectingSessionCard list={list} key={list.id} />;
+          })}
         </ProspectCardContainer>
       </Main>
     </Container>
@@ -87,4 +127,23 @@ const ProspectCardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
+
+const Transform = styled.div`
+  transform: scale(-1, 1);
+  width: 20px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const IconContainer = styled.div`
+  width: 20px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;

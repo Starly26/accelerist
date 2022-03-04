@@ -3,12 +3,13 @@ import { Field, Form } from "react-final-form";
 import styled from "styled-components";
 import { Glass } from "../../../../assets/icons/Glass";
 import { Setting } from "../../../../assets/icons/SettingIcon";
-import { SearchValue } from "../../../../types";
+import { FilterType } from "../../../../types";
+
 import { AdvancedPage } from "../AdvancedPage";
 
 type HeaderProps = {
-  onSubmit: () => void;
-  findName: (value: SearchValue) => void;
+  onSubmit: (values: FilterType) => void;
+  findName: (value: FilterType) => void;
 };
 
 const Header: React.FC<HeaderProps> = ({ onSubmit, findName }) => {
@@ -21,8 +22,8 @@ const Header: React.FC<HeaderProps> = ({ onSubmit, findName }) => {
         <Form
           onSubmit={findName}
           render={({ handleSubmit }) => (
-            <StyledForm>
-              <Field name="search">
+            <form>
+              <Field name="q">
                 {({ input }) => (
                   <div>
                     <InputContainer>
@@ -44,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ onSubmit, findName }) => {
                   </div>
                 )}
               </Field>
-            </StyledForm>
+            </form>
           )}
         />
       </HeaderDiv>
@@ -57,11 +58,18 @@ export default Header;
 
 const HeaderDiv = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   height: 96px;
   padding: 0 60px;
   align-items: center;
   background-color: #ffffff;
+  @media (max-width: 768px) {
+    padding: 0 32px;
+  }
+  @media (max-width: 475px) {
+    padding: 0 16px;
+  }
 `;
 
 const Title = styled.p`
@@ -70,10 +78,21 @@ const Title = styled.p`
   line-height: 150%;
 `;
 
-const StyledForm = styled.form`
-  width: 374px;
-  /* @media (max-width: 475px) {
-  } */
+const InputContainer = styled.div`
+  display: flex;
+  width: 715px;
+  margin-left: 82px;
+  border-radius: 6px;
+  align-items: center;
+  position: relative;
+  @media (max-width: 968px) {
+    width: 576px;
+    margin-left: 32px;
+  }
+  @media (max-width: 475px) {
+    width: 343px;
+    margin-left: 0;
+  }
 `;
 
 const Input = styled.input`
@@ -95,12 +114,4 @@ const ShowIconContainer = styled.div`
   width: 45px;
   height: 20px;
   cursor: pointer;
-`;
-const InputContainer = styled.div`
-  display: flex;
-  width: 715px;
-  margin-left: 82px;
-  border-radius: 6px;
-  align-items: center;
-  position: relative;
 `;

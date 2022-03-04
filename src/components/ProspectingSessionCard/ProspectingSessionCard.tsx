@@ -1,13 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { CompanyType } from "../../types";
+import { CompanyType, SaveListType } from "../../types";
 
-type ProspectingSessionCardProps = {};
+type ProspectingSessionCardProps = {
+  list: SaveListType;
+};
 
-const ProspectingSessionCard: React.FC<ProspectingSessionCardProps> = ({}) => {
+const ProspectingSessionCard: React.FC<ProspectingSessionCardProps> = ({
+  list,
+}) => {
+  console.log(list);
+
   return (
     <Container>
-      <Title>Race for the Cure</Title>
+      <Title>{list!.name}</Title>
       <hr />
       <GrayText>Filters</GrayText>
       <FlexContainer>

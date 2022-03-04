@@ -50,6 +50,9 @@ const ImageContainer = styled.div`
   border-radius: 6px;
   margin-bottom: 20px;
   margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Text = styled.p`

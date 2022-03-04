@@ -13,8 +13,8 @@ export default NotFoundPage;
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
 `;

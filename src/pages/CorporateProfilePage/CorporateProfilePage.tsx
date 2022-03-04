@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
@@ -12,16 +12,12 @@ const CorporateProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   let param = useParams();
   const id = param.id;
+  useEffect(() => {
+    dispatch(actions.company.getCompanyAction(id!));
+  }, []);
   const navigate = useNavigate();
-  const allCompanies = useAppSelector((state) => state.company.companies);
-  const favoriteCompanies = useAppSelector(
-    (state) => state.company.favoritesCompanies
-  );
-  let company = allCompanies.find((company) => company.id === id);
 
-  if (!allCompanies.length) {
-    company = favoriteCompanies.find((company) => company.id === id);
-  }
+  const company = useAppSelector((state) => state.company.company);
 
   if (!company) {
     return <></>;
@@ -29,9 +25,9 @@ const CorporateProfilePage: React.FC = () => {
 
   const likeFunction = () => {
     if (company!.like) {
-      return dispatch(actions.company.getDislikeCompanyAction(company!.id));
+      return dispatch(actions.company.getDislikeCompanyAction(company.id!));
     }
-    dispatch(actions.company.getLikeCompanyAction(company!.id));
+    dispatch(actions.company.getLikeCompanyAction(company.id!));
   };
 
   return (

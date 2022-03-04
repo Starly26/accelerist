@@ -1,6 +1,6 @@
 import {
   CompanyRequestType,
-  FilterCompanyRequestType,
+  // FilterCompanyRequestType,
   UserAuthType,
 } from "../types";
 import { apiAuth, instanse } from "./instanse";
@@ -14,12 +14,8 @@ export const registerUser = (user: UserAuthType) => {
 };
 
 export const getAllCompanies = (params: CompanyRequestType) => {
-  return instanse.get(`companies?page=${params.page}&limit=${params.limit}`);
-};
-
-export const getNamedFilterCompany = (params: FilterCompanyRequestType) => {
   return instanse.get(
-    `companies?page=${params.page}&limit=${params.limit}&q=${params.q}`
+    `companies?page=${params.page}&limit=${params.limit}${params.filter}`
   );
 };
 

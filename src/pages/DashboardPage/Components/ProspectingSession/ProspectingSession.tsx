@@ -1,16 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProspectingSessionCard } from "../../../../components/ProspectingSessionCard";
+import AppRoutes from "../../../../route/route";
 import { CompanyType } from "../../../../types";
 
 type ProspectingSessionProps = {};
 
-const ProspectingSession: React.FC<ProspectingSessionProps> = ({}) => {
+const ProspectingSession: React.FC<ProspectingSessionProps> = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <TitleContainer>
         <TitleText>Prospecting Sessions</TitleText>
-        <StyledLink>see more</StyledLink>
+        <StyledLink onClick={() => navigate(AppRoutes.Prospects)}>
+          see more
+        </StyledLink>
       </TitleContainer>
       <FlexContainer>
         <ProspectingSessionCard />
